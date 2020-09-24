@@ -22,6 +22,9 @@ from aggregation import *
 # xtick is name for x-axis
 # reverse is for the range of barplot and pointplot, reverse=False: range for pointplot is larger than barplot
 
+# trend_plot(data:输入数据集，names:[重命名收入，重命名笔数，图表标题]，
+# /means:是否将X轴替换为特定值，None代表不替换，xtick：x轴范围，reverse：False=收入的值大于笔数, True=笔数的值大于收入)
+
 def trend_plot(data, names, means= None,xtick=np.arange(0, 24, 1), reverse = False):
     plt.rcParams.update({"font.size": 10,'axes.unicode_minus':False})
     fig, ax = plt.subplots(figsize=(20, 11))
@@ -47,8 +50,10 @@ def trend_plot(data, names, means= None,xtick=np.arange(0, 24, 1), reverse = Fal
 
     plt.show()
 
+    
+    
 # lineplot for showing one set of data with automated range and mean
-
+# lineplot(data:数据集，xlabel:x轴名称，ylabel:y轴名称，names:[折线名称，图表名称]，xtick:x轴坐标范围)
 def lineplot(data, xlabel, ylabel, names=[], xtick=np.arange(0, 24, 1)):
     name, title = names
     plt.rcParams.update({"font.size": 20})
@@ -61,8 +66,11 @@ def lineplot(data, xlabel, ylabel, names=[], xtick=np.arange(0, 24, 1)):
     plt.xticks(xtick)
     plt.show()
 
+    
+    
 # lineplot for comparing two sets of data
-
+# lineplot_compare(data1:数据1, data2：数据2, xlabel:x轴名称，ylabel:y轴名称，
+# names:[折线1名称，折线2名称，图表名称]，xtick:x轴坐标范围):
 def lineplot_compare(data1, data2, xlabel, ylabel, names=[], xtick=np.arange(0, 24, 1)):
     name1, name2, title = names
     plt.rcParams.update({"font.size": 20})
@@ -78,7 +86,9 @@ def lineplot_compare(data1, data2, xlabel, ylabel, names=[], xtick=np.arange(0, 
     ax2.grid("off")
     plt.xticks(xtick)
     plt.show()
-
+    
+    
+#anomaly_plot(data：异常日数据,name：图表名称,if_sum：True(画收入图)False(笔数图),xtick = x轴标签)
 def anomaly_plot(data,name,if_sum=True,xtick = np.arange(0,24,1)):
     plt.figure(figsize=(20,9))
     if if_sum:
@@ -95,6 +105,7 @@ def anomaly_plot(data,name,if_sum=True,xtick = np.arange(0,24,1)):
 
 # heatmap for aggregated income amount
 # to generate heatmap we must turn data into pivot table using pivot_data()
+# heatmap(data:数据集，name:图表名称，count:计数或收入)
 def heatmap_weekhour(data, name, count = False):
     aggre = pivot_data(data, count)
     plt.figure(figsize=(4,4),dpi=200)

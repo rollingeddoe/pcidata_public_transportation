@@ -10,7 +10,8 @@ sns.set_style("darkgrid",{'font.sans-serif':['simhei','Arial'],'grid.linestyle':
 
 
 # The purpose of this .py file is to call the function directly with data_bus
-
+# 将数据集中的中文部分进行编码并且去掉数字和乱码
+# get_chinese(code: 单个object）
 def get_chinese(code):
     pattern="[\u4e00-\u9fa5]+"
     regex = re.compile(pattern)
@@ -20,7 +21,9 @@ def get_chinese(code):
     else:
         return [None]
 
-
+    
+# 输入：all_travel(new_user：新用户数据集, old_user：老用户数据集)
+# 输出： index为日期，field为新用户收入/笔数，老用户收入/笔数
 def all_travel(new_user, old_user):
     new = get_aggregated(new_user, by='date')
     old = get_aggregated(old_user, by='date')
@@ -30,6 +33,8 @@ def all_travel(new_user, old_user):
     return df
 
 # aggregate data into sum and count fields by date or hour
+# 用不同条件聚合数据
+# get_aggregated(data：数据集, by聚合条件 = {'date':天,'hour':小时,'date_hour':天和小时,'date_hour_weekday':日期，小时，星期日})
 def get_aggregated(data, by = 'date'):
     if by == 'date':
         agg = data.groupby([data.发生时间.dt.date]).agg({'收入金额（+元）': ['sum','count']},)
@@ -53,6 +58,8 @@ def get_aggregated(data, by = 'date'):
     return agg
 
 # get all data that matches a specific weekday/month/date/hour
+# 切割数据
+# get_chunk(data：数据集, value：所需值, field：筛选条件{‘weekday’：星期日，‘month’：月份，‘date’：日期，‘hour’：小时})
 def get_chunk(data, value, field='weekday'):
     if field == 'weekday':
         result = data[data.发生时间.dt.weekday == value]
@@ -68,6 +75,8 @@ def get_chunk(data, value, field='weekday'):
 
 
 # generate pivot table for heatmap
+# 为热力图生成数据透视表
+# pivot_data(dataL：数据集, count:收入/笔数)
 def pivot_data(data,count=False):
     if count:
         field = '笔数'
